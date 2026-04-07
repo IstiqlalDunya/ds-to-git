@@ -19,3 +19,100 @@ J12,2,45,Create UML diagrams
 J13,7,130,Optimize performance
 J14,3,55,Write user manual
 J15,5,95,Deploy application
+
+=============================================
+mermaid.live
+
+flowchart TD
+    A([Start]) --> B[Print banner / title]
+    B --> C[initialize]
+    C --> C1[Create InputValidator, DataLoader, RandomDataGenerator]
+    C1 --> C2[Set currentJobs = empty list]
+    C2 --> C3[Register algorithms map:\n1 GreedyProfit\n2 GreedyUnionFind\n3 DynamicProgramming\n4 Backtracking]
+    C3 --> D{running = true}
+
+    D --> E[displayMainMenu]
+    E --> F[Read choice  via InputValidator.getIntInput]
+    F --> G{choice}
+
+    %% Option 1: Load data
+    G -->|1| H[loadDataFromFile]
+    H --> H1[Show submenu:\n1 Load from text file\n2 Create sample data file]
+    H1 --> H2[Read subchoice ]
+    H2 --> H3{subchoice?}
+
+    H3 -->|1| H4[Prompt for file path]
+    H4 --> H5[DataLoader.loadFromFile]
+    H5 --> H6{IOException?}
+    H6 -->|No| H7[Set currentJobs; print loaded count; displayJobsSummary]
+    H6 -->|Yes| H8[Print error message]
+
+    H3 -->|2| H9[Prompt for output file path]
+    H9 --> H10[DataLoader.createSampleFile]
+    H10 --> H11{IOException?}
+    H11 -->|No| H12[Print success message]
+    H11 -->|Yes| H13[Print error message]
+
+    %% Option 2: Random generation
+    G -->|2| I[generateRandomData]
+    I --> I1[Show submenu:\n1 Default\n2 Custom ranges\n3 Difficulty level]
+    I1 --> I2[Read subchoice ]
+    I2 --> I3[Read count ]
+    I3 --> I4{subchoice?}
+
+    I4 -->|1| I5[currentJobs = generateRandomJobs]
+    I4 -->|2| I6[Read min/max deadlines & profits]
+    I6 --> I7[currentJobs = generateRandomJobs]
+    I4 -->|3| I8[Read difficulty ]
+    I8 --> I9[currentJobs = generateRandomJobsWithDifficulty]
+
+    I5 --> I10[Print success + displayJobsSummary]
+    I7 --> I10
+    I9 --> I10
+
+    %% Option 3: Display jobs
+    G -->|3| J[displayJobs]
+    J --> J1{currentJobs empty?}
+    J1 -->|Yes| J2[Print: no jobs; return]
+    J1 -->|No| J3[Print table of jobs + stats\n]
+
+    %% Option 4: Run algorithms
+    G -->|4| K[runAlgorithms]
+    K --> K1{InputValidator.validateJobs?}
+    K1 -->|No| E
+    K1 -->|Yes| K2[Show algorithm menu:\n1 GreedyProfit\n2 GreedyUnionFind\n3 DP\n4 Backtracking\n5 Run all]
+    K2 --> K3[Read algorithm choice]
+    K3 --> K4{choice==5?}
+    K4 -->|No| L[runSingleAlgorithm]
+    L --> L1[Print algorithm name + complexities]
+    L1 --> L2[result = algorithm.solve]
+    L2 --> L3[Print full AlgorithmResult ]
+
+    K4 -->|Yes| M[runAllAlgorithms]
+    M --> M1{currentJobs.size > 30?}
+    M1 -->|Yes| M2[Warn user; ask Continue? ]
+    M2 --> M3{Proceed == y?}
+    M3 -->|No| E
+    M3 -->|Yes| M4[Loop i=1..4 algorithms]
+    M1 -->|No| M4
+    M4 --> M5[For each algorithm:\nsolve\nprint count selected, profit, exec time\nprint selected job IDs/details]
+    M5 --> E
+
+    %% Option 5: Exit
+    G -->|5| N[running=false; print goodbye]
+    N --> O[Close scanner]
+    O --> P([End])
+
+    %% Post-action pause behavior
+    H7 --> Q{running AND choice!=4 AND choice!=5?}
+    H8 --> Q
+    H12 --> Q
+    H13 --> Q
+    I10 --> Q
+    J2 --> Q
+    J3 --> Q
+
+    Q -->|Yes| R[Prompt: Press Enter to continue]
+    R --> E
+    Q -->|No| E
+  
