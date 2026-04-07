@@ -1,0 +1,21 @@
+# Job Sequencing Problem - Sample Data
+# Format: JobID,Deadline,Profit,Description
+# This is a sample dataset for university assignments
+
+J1,3,60,Complete algorithm analysis assignment
+J2,1,100,Submit project proposal
+J3,2,20,Review literature
+J4,3,40,Prepare presentation slides
+J5,2,20,Test and debug code
+J6,4,80,Write final report
+J7,1,50,Create documentation
+J8,5,90,Implement UI components
+J9,3,70,Conduct user testing
+J10,4,30,Update references
+
+# Additional jobs for testing
+J11,6,110,Develop testing suite
+J12,2,45,Create UML diagrams
+J13,7,130,Optimize performance
+J14,3,55,Write user manual
+J15,5,95,Deploy application
